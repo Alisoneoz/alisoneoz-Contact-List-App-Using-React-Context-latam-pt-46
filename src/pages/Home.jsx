@@ -1,16 +1,91 @@
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
+import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { getContacts } from "../services/getContacts.js";
 
 export const Home = () => {
 
-  const {store, dispatch} =useGlobalReducer()
+	const { store, dispatch } = useGlobalReducer();
+	console.log("holis este es el estado ➡ ", store.contacts)
+
+	const handleContacts = async () => {
+		const contacts = await getContacts();
+		console.log( "los contactos en el hanlde", contacts)
+		dispatch({ type: "set_contacts", payload: { contacts: contacts } })
+	}
+
+	useEffect(() => {
+		handleContacts()
+	}, [])
 
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
+		<div className="text-center mt-5 p-5">
+			{/* card*/}
+
+			<ul className="list-group">
+			
+			{store.contacts.map((contact, index) => {
+					const {name}= contact
+					return (
+						<li className="list-group-item" key={index}>
+
+							<div className="card mb-3 m-auto border-0">
+								<div className="row g-0 d-flex justify-content-between">
+									<div className="col-md-6 d-flex gap-5">
+										<div className="">
+											<img src="https://avatar.iran.liara.run/public/boy" style={{ width: "200px", height: "200px" }} className="rounded-circle" alt="..." />
+										</div>
+										<div className="">
+											<div className="card-body text-secondary">
+											<h5 className="card-title text-start">
+													
+													{contact.name}
+												</h5>
+												<h5 className="card-title text-start">
+													<i className="fa-solid fa-location-dot me-2"></i>
+													{contact.address}
+												</h5>
+												<h6 className="card-title text-start">
+													<i className="fa-solid fa-phone me-2"></i> 
+													{contact.number}
+												</h6>
+												<p className="card-text text-start">
+													<i className="fa-solid fa-envelope me-2"></i> 
+													{contact.email}
+												</p>
+
+											</div>
+										</div>
+									</div>
+
+									<div className="col-md-2 ">
+										<div className="card-body d-flex justify-content-around">
+											<button className="border-0 bg-light"><i className="fa-solid fa-pen"></i></button>
+											<button className="border-0 bg-light"><i className="fa-solid fa-trash"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					)
+				})}
+
+
+
+			</ul>
+
+			<div className="m-auto">
+
+			</div>
+
+
+
+			{/* input */}
+
+			<div className="input-group mb-3">
+				<span className="input-group-text" id="basic-addon1">@</span>
+				<input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+			</div>
+
 		</div>
 	);
 }; 
