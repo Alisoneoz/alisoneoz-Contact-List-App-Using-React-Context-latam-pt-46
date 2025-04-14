@@ -6,7 +6,12 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action) {
   switch(action.type){
-
+      case "ADD_CONTACT":
+        return  {
+          ...store,
+          contacts:[...store.contacts, action.payload]
+        }
+      ;
       case 'set_contacts':
         return{
         ...store,

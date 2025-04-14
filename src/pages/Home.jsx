@@ -13,14 +13,15 @@ export const Home = () => {
 	}
 
 	const handleContacts = async () => {
-		const contacts = await getContacts();
-		
+		const contacts = await getContacts();		
 		dispatch({ type: "set_contacts", payload: { contacts: contacts } })
+		console.log("holis este es el estado ➡ ", store.contacts)
 	}
 
 	useEffect(() => {
 		handleCreateAgenda()
 		handleContacts()
+		
 	}, [])
 
 	return (
