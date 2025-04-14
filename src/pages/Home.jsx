@@ -1,19 +1,25 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { getContacts } from "../services/getContacts.js";
+import { createAgenda } from "../services/createAgenda.js";
 
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer();
 	console.log("holis este es el estado ➡ ", store.contacts)
 
+	const handleCreateAgenda = async ()=>{
+		const laAgenda = await createAgenda()
+	}
+
 	const handleContacts = async () => {
 		const contacts = await getContacts();
-		console.log( "los contactos en el hanlde", contacts)
+		
 		dispatch({ type: "set_contacts", payload: { contacts: contacts } })
 	}
 
 	useEffect(() => {
+		handleCreateAgenda()
 		handleContacts()
 	}, [])
 
@@ -79,12 +85,7 @@ export const Home = () => {
 
 
 
-			{/* input */}
 
-			<div className="input-group mb-3">
-				<span className="input-group-text" id="basic-addon1">@</span>
-				<input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-			</div>
 
 		</div>
 	);

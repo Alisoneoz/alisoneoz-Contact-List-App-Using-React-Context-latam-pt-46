@@ -2,7 +2,7 @@ const BASE_URL = "https://playground.4geeks.com/contact/agendas"
 
 export const getContacts = async () => {
     try {
-        const response = await fetch(BASE_URL + "/holis/contacts",
+        const response = await fetch("https://playground.4geeks.com/contact/agendas/holis/contacts",
             {
                 method: "GET",
                 headers: {
