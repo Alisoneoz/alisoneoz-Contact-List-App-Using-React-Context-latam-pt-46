@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { getContacts } from "../services/getContacts.js";
 import { createAgenda } from "../services/createAgenda.js";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
 
@@ -66,7 +67,7 @@ export const Home = () => {
 
 									<div className="col-md-2 ">
 										<div className="card-body d-flex justify-content-around">
-											<button className="border-0 bg-light"><i className="fa-solid fa-pen"></i></button>
+											<Link to="``" className="border-0 bg-light"><i className="fa-solid fa-pen"></i></Link>
 											<button className="border-0 bg-light"><i className="fa-solid fa-trash"></i></button>
 										</div>
 									</div>
