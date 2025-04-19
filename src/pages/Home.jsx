@@ -3,26 +3,36 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { getContacts } from "../services/getContacts.js";
 import { createAgenda } from "../services/createAgenda.js";
 import { Link } from "react-router-dom";
+import { deleteContact } from "../services/deleteContact.js"
 
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer();
 	console.log("holis este es el estado ➡ ", store.contacts)
 
-	const handleCreateAgenda = async ()=>{
+	const handleCreateAgenda = async () => {
 		const laAgenda = await createAgenda()
 	}
 
 	const handleContacts = async () => {
-		const contacts = await getContacts();		
+		const contacts = await getContacts();
 		dispatch({ type: "set_contacts", payload: { contacts: contacts } })
 		console.log("holis este es el estado ➡ ", store.contacts)
 	}
 
+	const handleDelete = async (id) =>{
+		const contactoABorrar = await deleteContact(id);
+		dispatch({
+			type: "DELETE_CONTACT",
+			payload: id
+		})
+	}
+
+
 	useEffect(() => {
 		handleCreateAgenda()
 		handleContacts()
-		
+
 	}, [])
 
 	return (
@@ -30,9 +40,9 @@ export const Home = () => {
 			{/* card*/}
 
 			<ul className="list-group">
-			
-			{store.contacts.map((contact, index) => {
-					const {name}= contact
+
+				{store.contacts.map((contact, index) => {
+					const { name } = contact
 					return (
 						<li className="list-group-item" key={index}>
 
@@ -44,8 +54,8 @@ export const Home = () => {
 										</div>
 										<div className="">
 											<div className="card-body text-secondary">
-											<h5 className="card-title text-start">
-													
+												<h5 className="card-title text-start">
+
 													{contact.name}
 												</h5>
 												<h5 className="card-title text-start">
@@ -53,11 +63,11 @@ export const Home = () => {
 													{contact.address}
 												</h5>
 												<h6 className="card-title text-start">
-													<i className="fa-solid fa-phone me-2"></i> 
-													{contact.number}
+													<i className="fa-solid fa-phone me-2"></i>
+													{contact.phone}
 												</h6>
 												<p className="card-text text-start">
-													<i className="fa-solid fa-envelope me-2"></i> 
+													<i className="fa-solid fa-envelope me-2"></i>
 													{contact.email}
 												</p>
 
@@ -67,8 +77,12 @@ export const Home = () => {
 
 									<div className="col-md-2 ">
 										<div className="card-body d-flex justify-content-around">
-											<Link to="``" className="border-0 bg-light"><i className="fa-solid fa-pen"></i></Link>
-											<button className="border-0 bg-light"><i className="fa-solid fa-trash"></i></button>
+											<Link to={`/edit/${contact.id}`} className="border-0 bg-light">
+												<i className="fa-solid fa-pen"></i>
+											</Link>
+											<button 
+											onClick={()=> handleDelete(contact.id)}
+											className="border-0 bg-light"><i className="fa-solid fa-trash"></i></button>
 										</div>
 									</div>
 								</div>

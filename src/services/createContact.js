@@ -6,7 +6,7 @@ export const createContact = async(contact) =>{
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: contact.fullName,
+                name: contact.name,
                 email: contact.email,
                 phone: contact.phone,
                 address: contact.address,

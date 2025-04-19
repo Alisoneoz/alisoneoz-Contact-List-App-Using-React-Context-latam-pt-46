@@ -1,25 +1,47 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { createContact } from "../services/createContact"
 import  useGlobalReducer from "../hooks/useGlobalReducer"
 import { useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom";
+import { updateTheContact } from "../services/updateTheContact";
 
-export const NewContact = () => {
+export const UpdateContact = () => {
 
-    const [newContact, setNewContact] = useState({
+    const { contactId } = useParams();
+    const { store,dispatch }= useGlobalReducer();
+    const navigate = useNavigate();
+
+    const [updateContact, setUpdateContact] = useState({
         name: "",
         email: "",
         phone: "",
         address: ""
     })
-    const { dispatch }= useGlobalReducer()
 
-    const navigate = useNavigate()
+    useEffect(()=>{
+        const contactToEdit = store.contacts.find( contact => contact.id === contactId)
+        if (contactToEdit){
+            setUpdateContact({
+                name: contactToEdit.name,
+                email: contactToEdit.email,
+                phone: contactToEdit.phone,
+                address: contactToEdit.address
+            })
+        }
+    }, [contactId])
+    
+
+    
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
         try{
-            await createContact(newContact);
-            dispatch({ type: "ADD_CONTACT", payload: newContact });
+            await updateTheContact(contactId, updateContact);
+            dispatch({ type: "UPDATE_CONTACT", 
+                payload: {
+                    id:contactId,
+                    ...updateContact
+            }});
             navigate("/");
         } catch(error){
             console.log("hubo un errror al crear el contacto: ", error)
@@ -40,8 +62,8 @@ export const NewContact = () => {
                     placeholder="Enter Username"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
-                    value={newContact.name}
+                    onChange={(e) => setUpdateContact({ ...updateContact, name: e.target.value })}
+                    value={updateContact.name}
 
                 />
 
@@ -52,8 +74,8 @@ export const NewContact = () => {
                     placeholder="Enter Email"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    onChange={(e)=> setNewContact({...newContact, email: e.target.value})}
-                    value={newContact.email}
+                    onChange={(e)=> setUpdateContact({...updateContact, email: e.target.value})}
+                    value={updateContact.email}
                 />
 
                 <label>Phone</label>
@@ -63,8 +85,8 @@ export const NewContact = () => {
                     placeholder="Enter Phone"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    onChange={(e)=> setNewContact({...newContact, phone: e.target.value})}
-                    value={newContact.phone}
+                    onChange={(e)=> setUpdateContact({...updateContact, phone: e.target.value})}
+                    value={updateContact.phone}
                 />
 
                 <label>Address</label>
@@ -74,8 +96,8 @@ export const NewContact = () => {
                     placeholder="Enter Address"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    onChange={(e)=> setNewContact({...newContact, address:e.target.value})}
-                    value={newContact.address}
+                    onChange={(e)=> setUpdateContact({...updateContact, address:e.target.value})}
+                    value={updateContact.address}
                 />
                 <button className="btn btn-primary container-fluid">Save</button>
             </form>
