@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createContact } from "../services/createContact"
 import  useGlobalReducer from "../hooks/useGlobalReducer"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const NewContact = () => {
 
@@ -27,7 +27,7 @@ export const NewContact = () => {
     }
 
     return (
-        <div className="">
+        <div className="content-fluid p-5">
             <form 
             className="d-flex flex-column gap-3"
             onSubmit={handleSubmit}
@@ -79,6 +79,7 @@ export const NewContact = () => {
                 />
                 <button className="btn btn-primary container-fluid">Save</button>
             </form>
+            <Link to="/" className="text-primary">or get back to contacts</Link>
         </div>
     )
 }
