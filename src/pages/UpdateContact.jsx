@@ -19,7 +19,7 @@ export const UpdateContact = () => {
     })
 
     useEffect(()=>{
-        const contactToEdit = store.contacts.find( contact => contact.id === contactId)
+        const contactToEdit = store.contacts.find( contact => contact.id === Number(contactId))
         if (contactToEdit){
             setUpdateContact({
                 name: contactToEdit.name,
